@@ -1,6 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
 from database import engine, Base, get_db
 import models, schemas, crud, scraper, llm
 
@@ -50,3 +53,19 @@ def get_recipe_details(recipe_id: int, db: Session = Depends(get_db)):
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
     return recipe
+
+# Serve Frontend
+frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
+app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+
+@app.get("/")
+async def serve_index():
+    return FileResponse(os.path.join(frontend_path, "index.html"))
+
+@app.get("/{path_name:path}")
+async def catch_all(path_name: str):
+    file_path = os.path.join(frontend_path, path_name)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return FileResponse(file_path)
+    return FileResponse(os.path.join(frontend_path, "index.html"))
+
