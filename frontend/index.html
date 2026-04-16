@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Extractor & Meal Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>🍳 Recipe Extractor <span class="highlight">&</span> Meal Planner</h1>
+            <p>Paste a recipe blog URL and let AI do the rest.</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="extract">Extract Recipe</button>
+            <button class="tab-btn" data-tab="history">Saved Recipes</button>
+            <button class="tab-btn" data-tab="planner">Meal Planner</button>
+        </nav>
+
+        <main class="content">
+            <!-- TAB 1: EXTRACT RECIPE -->
+            <section id="extract" class="tab-content active">
+                <div class="input-group glass-panel">
+                    <input type="url" id="recipe-url" placeholder="https://www.allrecipes.com/recipe/..." required>
+                    <button id="extract-btn">Extract Recipe</button>
+                </div>
+                
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Scraping and analyzing recipe with LLM...</p>
+                </div>
+
+                <div id="recipe-result" class="hidden">
+                    <!-- Dynamic Content Injected Here -->
+                </div>
+            </section>
+
+            <!-- TAB 2: SAVED RECIPES (HISTORY) -->
+            <section id="history" class="tab-content hidden">
+                <div class="glass-panel">
+                    <h2>Saved Recipes</h2>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Cuisine</th>
+                                <th>Difficulty</th>
+                                <th>Extracted On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 3: MEAL PLANNER -->
+            <section id="planner" class="tab-content hidden">
+                <div class="glass-panel">
+                    <h2>Meal Planner</h2>
+                    <p>Select multiple recipes below to generate a merged shopping list.</p>
+                    <div class="planner-controls">
+                        <select id="recipe-select" multiple size="5" class="custom-select">
+                            <!-- Options -->
+                        </select>
+                        <button id="generate-plan-btn">Generate Shopping List</button>
+                    </div>
+
+                    <div id="planner-result" class="hidden mt-4">
+                        <h3>Combined Shopping List</h3>
+                        <div id="merged-shopping-list"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="recipe-modal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <span class="close-btn">&times;</span>
+            <div id="modal-recipe-details"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
